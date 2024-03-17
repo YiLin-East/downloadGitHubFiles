@@ -14,7 +14,7 @@ import java.io.File
  * 下载配置文件 与 背景tup
  */
 class DownloadBackgroundResourceFiles {
-    private val TAG by lazy { "text"}
+    private val TAG by lazy { "test"}
 
     private suspend fun checkDown(): Boolean{
         return if (File(AddressData.backgroundFileAddress, PubState.chatBackgroundConfigureJsonName).exists()){
@@ -41,8 +41,9 @@ class DownloadBackgroundResourceFiles {
     }
 
     private suspend fun downloadFiles(fileNames: List<String>){
-        downloadPicturesImpl(fileNames, AddressData.backgroundFileAddress).collect{
+        downloadPicturesImpl2(fileNames, AddressData.backgroundFileAddress).collect{
             Log.e(TAG, "downloadFiles: $it", )
+
         }
     }
 
