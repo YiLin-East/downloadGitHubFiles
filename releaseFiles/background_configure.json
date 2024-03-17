@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "type" : -1,
+      "file_name" : "testA.png"
+    },
+    {
+      "type" : 0,
+      "file_name" : "testB.png"
+    }
+  ]
+}
