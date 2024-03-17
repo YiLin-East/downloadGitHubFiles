@@ -1,9 +1,11 @@
 package com.me.downloadfiles.retrofit2.download
 
 
+import android.util.Log
 import com.me.downloadfiles.retrofit2.ApiManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapMerge
@@ -19,8 +21,9 @@ import java.io.File
 /**
  * 图片批量下载
  */
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 suspend fun downloadPicturesImpl(fileNames: List<String>, basePath: File): Flow<String> {
+    val TAG = "test"
     return withContext(Dispatchers.IO) {
         if (fileNames.isEmpty()) {
             emptyFlow()
@@ -28,6 +31,7 @@ suspend fun downloadPicturesImpl(fileNames: List<String>, basePath: File): Flow<
             val flatMapMergeSize = fileNames.size.coerceAtMost(3).coerceAtLeast(1)
             val fileNameFlow = flow<String> {
                 fileNames.forEach {
+                    Log.e(TAG, "downloadPicturesImpl:图片名称-》$it", )
                     emit(it)
                 }
             }
@@ -41,13 +45,16 @@ suspend fun downloadPicturesImpl(fileNames: List<String>, basePath: File): Flow<
                             response: Response<ResponseBody>
                         ) {
                             if (response.isSuccessful) {
+                                Log.e(TAG, "onResponse:downloadPicturesImpl isSuccessful", )
                                 launch {
                                     withContext(Dispatchers.IO) {
                                         val finally = File(basePath, it)
+                                        if (!finally.exists()) finally.exists()
                                         try {
                                             finally.outputStream().use { outputStream ->
                                                 response.body()?.byteStream()?.copyTo(outputStream)
                                             }
+                                            Log.e("TAG", "onResponse: 图片文件下载-》$it", )
                                             emit(it)
                                         } catch (e: Exception) {
                                             emit("null")

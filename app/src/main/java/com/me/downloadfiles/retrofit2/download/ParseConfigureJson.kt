@@ -17,7 +17,7 @@ import java.io.File
  *  json配置文件与背景图 都在同一个目录下
  */
 object ParseConfigureJson{
-    private val jsonFile = File(AddressData.backgroundFileAddress, PubState.chatBackgroundConfigureJsonName)
+    private val jsonFile by lazy { File(AddressData.backgroundFileAddress, PubState.chatBackgroundConfigureJsonName) }
     private var configureData : ConfigureData? = null
 
     suspend fun getFileByType(type: Int): File?{

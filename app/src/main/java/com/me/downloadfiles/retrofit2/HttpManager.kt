@@ -12,7 +12,7 @@ object HttpManager {
 
     private val mRetrofit: Retrofit = Retrofit.Builder()
         .client(initOkHttpClient())
-        .baseUrl("https://github.com/YiLin-East/downloadGitHubFiles/tree/main")
+        .baseUrl("https://github.com/")
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 
@@ -33,10 +33,16 @@ object HttpManager {
         //日志拦截器
         if (true){
             val logInterceptor = HttpLoggingInterceptor { message: String ->
-                Log.i("okhttp", "data->$message")
+                Log.i("okhttp", "header->$message")
             }
             logInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
             build.addInterceptor(logInterceptor)
+
+            val logInterceptorBody = HttpLoggingInterceptor { message: String ->
+                Log.i("okhttp", "body->$message")
+            }
+            logInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            build.addInterceptor(logInterceptorBody)
         }
 
 //        //网络状态拦截
