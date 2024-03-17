@@ -2,6 +2,7 @@ package com.me.downloadfiles.retrofit2.download
 
 
 import android.util.Log
+import com.me.downloadfiles.GlobalScopeFlow
 import com.me.downloadfiles.retrofit2.AddressData
 import com.me.downloadfiles.retrofit2.ApiManager
 import com.me.downloadfiles.retrofit2.PubState
@@ -43,7 +44,7 @@ class DownloadBackgroundResourceFiles {
     private suspend fun downloadFiles(fileNames: List<String>){
         downloadPicturesImpl2(fileNames, AddressData.backgroundFileAddress).collect{
             Log.e(TAG, "downloadFiles: $it", )
-
+            GlobalScopeFlow.textFlow.emit(it)
         }
     }
 
